@@ -1,42 +1,45 @@
-const { gql } = require('graphql-tag');
+const { gql } = require("apollo-server-express");
 
-const typeDefs = gql`
-  type User {
-    _id: ID
-    username: String
-    email: String
-    password: String
-    savedBooks: [bookSchema]!
-  }
+module.exports = gql`
+type User {
+  _id: ID
+  username: String
+  email: String
+  bookCount: Int
+  savedBooks: [Book]!
+}
 
-  type Book {
-    _id: ID
-    authors: String
-    description: String
-    image: String
-    link: String
-    title: String
-  }
+type Query {
+  me: User
+}
 
-  type Auth {
-    token: ID!
-    user: User
-  }
+type Book {
+  bookId: String
+  authors: [String]
+  description: String
+  image: String
+  link: String
+  title: String
+}
 
-  type Query {
-    users: [User]
-    user(username: String!): User
-    books(username: String): [Book]
-    book(bookId: ID!): Book
-    me: User
-  }
+type Auth {
+  token: String
+  user: User
+}
 
-  type Mutation {
-    addUser(username: String!, email: String!, password: String!): Auth
-    login(email: String!, password: String!): Auth
-    addBook(bookId: ID!, bookText: String!): Book
-    removeBook(bookId: ID!): book
-  }
+input SaveBookInput {
+  bookId: String!
+  authors: [String!]!
+  title: String!
+  image: String!
+  link: String!
+  description: String!
+}
+
+type Mutation {
+  addUser(username: String!, email: String!, password: String!): Auth
+  login(email: String!, password: String!): Auth
+  saveBook(input: SaveBookInput): User
+  removeBook(bookId: String!): User
+}
 `;
-
-module.exports = typeDefs;
