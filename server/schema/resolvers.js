@@ -15,7 +15,7 @@ const resolvers = {
       const params = username ? { username } : {};
       return Book.find(params).sort({ createdAt: -1 });
     },
-    thought: async (parent, { bookId }) => {
+    book: async (parent, { bookId }) => {
       return Book.findOne({ _id: bookId });
     },
     me: async (parent, args, context) => {

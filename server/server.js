@@ -5,7 +5,7 @@ const routes = require("./routes");
 const { ApolloServer } = require("apollo-server-express");
 const bcrypt = require("bcrypt-promise");
 
-const typeDefs = require("./schema/typeDefs");
+const { typeDefs }  = require("./schema/typeDefs");
 const { User } = require("./models");
 
 const resolvers = {
@@ -59,9 +59,9 @@ const server = new ApolloServer({ typeDefs, resolvers });
   server.applyMiddleware({ app });
 
   // if we're in production, serve client/build as static assets
-  // if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, "../client/build")));
-  // }
+  }
 
   app.use(routes);
 
