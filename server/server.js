@@ -4,9 +4,10 @@ const db = require("./config/connection");
 const routes = require("./routes");
 const { ApolloServer } = require("apollo-server-express");
 const bcrypt = require("bcrypt-promise");
-
-const { typeDefs }  = require("./schema/typeDefs");
+const { authMiddleware } = require('./utils/auth');
+const { typeDefs }  = require("./schema");
 const { User } = require("./models");
+
 
 const resolvers = {
   Query: {
@@ -59,15 +60,15 @@ const server = new ApolloServer({ typeDefs, resolvers });
   server.applyMiddleware({ app });
 
   // if we're in production, serve client/build as static assets
-  if (process.env.NODE_ENV === 'production') {
+  // if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, "../client/build")));
-  }
+  // }
 
   app.use(routes);
 
   db.once("open", async () => {
     app.listen(PORT, () =>
-      console.log(`🌍 Now listening on http://localhost:${PORT}`)
+      console.log(`🌍 Now listening on http://localhost:${PORT}${server.graphqlPath}`)
     );
   });
 })();
