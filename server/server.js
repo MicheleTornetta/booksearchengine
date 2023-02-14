@@ -68,7 +68,7 @@ const server = new ApolloServer({ typeDefs, resolvers });
 
   db.once("open", async () => {
     app.listen(PORT, () =>
-      console.log(`🌍 Now listening on http://localhost:${PORT}${server.graphqlPath}`)
+      console.log(`🌍 Now listening on http://localhost:${PORT}`)
     );
   });
 })();
