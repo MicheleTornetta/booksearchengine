@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt-promise");
 const { applyMiddleware } = require('./utils/auth');
 const { typeDefs }  = require("./schema");
 const { User } = require("./models");
-
+const crypto = require('crypto');
 
 const resolvers = {
   Query: {
@@ -18,27 +18,39 @@ const resolvers = {
 
   Mutation: {
     addUser: async (_, { username, email, password }) => {
-      const hashed = await bcrypt.hash(password, 10);
       return {
         token: "Testing",
         user: await User.create({
           username,
           email,
-          password: hashed,
+          password,
           savedBooks: [],
         }),
       };
     },
 
     login: async (_, { email, password }) => {
-      const user = await User.find({ email });
-      if (user) {
+      const users = await User.find({ email });
+      if (users.length) {
+        const user = users[0];
+
         if (await bcrypt.compare(password, user.password)) {
+          let token = crypto.randomBytes(64).toString('hex');
+
+          user.token = token;
+          user.save();
+
           return {
-            token: "TESTING",
+            token,
             user,
           };
         }
+        else {
+          console.log('bad pword');
+        }
+      }
+      else {
+        console.log('no user');
       }
 
       return null;
