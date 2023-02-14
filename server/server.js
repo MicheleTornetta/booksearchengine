@@ -4,19 +4,61 @@ const db = require("./config/connection");
 const routes = require("./routes");
 const { ApolloServer } = require("apollo-server-express");
 const bcrypt = require("bcrypt-promise");
-const { applyMiddleware } = require('./utils/auth');
-const { typeDefs }  = require("./schema");
+const { applyMiddleware } = require("./utils/auth");
+const { typeDefs } = require("./schema");
 const { User } = require("./models");
-const crypto = require('crypto');
+const crypto = require("crypto");
 
 const resolvers = {
   Query: {
-    me: async () => {
-      return await User.find({}).exec();
+    me: async ({ token }) => {
+      return await User.find({token});
     },
   },
 
   Mutation: {
+    removeBook: async (_, { bookId, token }) => {
+      const users = await User.find({token});
+      if (users.length) {
+        const user = users[0];
+
+        for (let i = 0; i < user.savedBooks.length; i++) {
+          if (user.savedBooks[i].bookId == bookId) {
+            user.savedBooks.splice(i, 1);
+
+            await user.save();
+          }
+        }
+
+        return user;
+      }
+
+      return;
+    },
+
+    saveBook: async (_, { input, token }) => {
+      const { bookId, authors, title, image, link, description } = input;
+
+      const users = await User.find({token});
+      if (users.length) {
+        const user = users[0];
+
+        user.savedBooks.push({
+          authors,
+          bookId,
+          description,
+          image,
+          link,
+          title
+        });
+
+        await user.save();
+
+        return user;
+      }
+
+      return null;
+    },
     addUser: async (_, { username, email, password }) => {
       return {
         token: "Testing",
@@ -35,7 +77,7 @@ const resolvers = {
         const user = users[0];
 
         if (await bcrypt.compare(password, user.password)) {
-          let token = crypto.randomBytes(64).toString('hex');
+          let token = crypto.randomBytes(64).toString("hex");
 
           user.token = token;
           user.save();
@@ -44,13 +86,11 @@ const resolvers = {
             token,
             user,
           };
+        } else {
+          console.log("bad pword");
         }
-        else {
-          console.log('bad pword');
-        }
-      }
-      else {
-        console.log('no user');
+      } else {
+        console.log("no user");
       }
 
       return null;

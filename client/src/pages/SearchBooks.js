@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Container, Col, Row, Form, Button, Card } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
-import { saveBook, searchGoogleBooks } from '../utils/API';
+import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
+const { gql, useMutation } = require('@apollo/client');
 
 const SearchBooks = () => {
   // create state for holding returned google api data
@@ -18,6 +19,18 @@ const SearchBooks = () => {
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
   useEffect(() => {
     return () => saveBookIds(savedBookIds);
+  });
+
+  const [addBook] = useMutation(gql`
+    mutation SaveBook($token: String!, $input: SaveBookInput) {
+      saveBook(token: $token, input: $input) {
+        username
+      }
+    }
+  `, {
+    onCompleted: (data) => {
+      console.log(data);
+    }
   });
 
   // create method to search for books and set state on form submit
@@ -66,13 +79,20 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBook(bookToSave, token);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      // if book successfully saves to user's account, save book id to state
+      await addBook({
+        variables: {
+          "input": {
+            "title": bookToSave.title,
+            "link": bookToSave.link,
+            "image": bookToSave.image,
+            "description": bookToSave.description,
+            "bookId": bookId,
+            "authors": bookToSave.authors
+          },
+          "token": Auth.getToken()
+        },
+      });
+      
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);
