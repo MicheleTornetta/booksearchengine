@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const db = require("./config/connection");
 const routes = require("./routes");
+//Needed to implemented the Apollo Server and apply it to the Express server as middleware
 const { ApolloServer } = require("apollo-server-express");
 const bcrypt = require("bcrypt-promise");
 const { applyMiddleware } = require("./utils/auth");
@@ -98,6 +99,7 @@ const resolvers = {
   },
 };
 
+//Implemented the Apollo Server and apply it to the Express server as middleware
 const server = new ApolloServer({ typeDefs, resolvers });
 
 (async () => {

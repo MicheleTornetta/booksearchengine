@@ -96,74 +96,74 @@ In order for this application to use a GraphQL API, you’ll need to refactor th
 
 You’ll need to complete the following tasks in each of these back-end files:
 
-* `auth.js`: Update the auth middleware function to work with the GraphQL API.
+            * `auth.js`: Update the auth middleware function to work with the GraphQL API.
 
-* `server.js`: Implement the Apollo Server and apply it to the Express server as middleware.
+      * `server.js`: Implement the Apollo Server and apply it to the Express server as middleware.
 
 * `Schemas` directory:
 
-	* `index.js`: Export your typeDefs and resolvers.
+                  	* `index.js`: Export your typeDefs and resolvers.
 
-	* `resolvers.js`: Define the query and mutation functionality to work with the Mongoose models.
+* `resolvers.js`: Define the query and mutation functionality to work with the Mongoose models.
 
-		**Hint**: Use the functionality in the `user-controller.js` as a guide.
+**Hint**: Use the functionality in the `user-controller.js` as a guide.
 
-	* `typeDefs.js`: Define the necessary `Query` and `Mutation` types:
+                	* `typeDefs.js`: Define the necessary `Query` and `Mutation` types:
 
 * `Query` type:
 
-* `me`: Which returns a `User` type.
+            * `me`: Which returns a `User` type.
 
 * `Mutation` type:
 
-* `login`: Accepts an email and password as parameters; returns an `Auth` type.
+            * `login`: Accepts an email and password as parameters; returns an `Auth` type.
 
-* `addUser`: Accepts a username, email, and password as parameters; returns an `Auth` type.
+            * `addUser`: Accepts a username, email, and password as parameters; returns an `Auth` type.
 
-* `saveBook`: Accepts a book author's array, description, title, bookId, image, and link as parameters; returns a `User` type. (Look into creating what's known as an `input` type to handle all of these parameters!)
+            * `saveBook`: Accepts a book author's array, description, title, bookId, image, and link as parameters; returns a `User` type. (Look into creating what's known as an `input` type to handle all of these parameters!)
 
-* `removeBook`: Accepts a book's `bookId` as a parameter; returns a `User` type.
+            * `removeBook`: Accepts a book's `bookId` as a parameter; returns a `User` type.
 
-* `User` type:
+            * `User` type:
 
-* `_id`
+            * `_id`
 
-* `username`
+            * `username`
 
-* `email`
+            * `email`
 
-* `bookCount`
+            * `bookCount`
 
-* `savedBooks` (This will be an array of the `Book` type.)
+            * `savedBooks` (This will be an array of the `Book` type.)
 
-* `Book` type:
+            * `Book` type:
 
-* `bookId` (Not the `_id`, but the book's `id` value returned from Google's Book API.)
+            * `bookId` (Not the `_id`, but the book's `id` value returned from Google's Book API.)
 
-* `authors` (An array of strings, as there may be more than one author.)
+            * `authors` (An array of strings, as there may be more than one author.)
 
-* `description`
+            * `description`
 
-* `title`
+            * `title`
 
-* `image`
+            * `image`
 
-* `link`
+            * `link`
 
-* `Auth` type:
+            * `Auth` type:
 
-* `token`
+            * `token`
 
-* `user` (References the `User` type.)
+            * `user` (References the `User` type.)
 
 
 ### Front-End Specifications
 
 You'll need to create the following front-end files:
 
-* `queries.js`: This will hold the query `GET_ME`, which will execute the `me` query set up using Apollo Server.
+              * `queries.js`: This will hold the query `GET_ME`, which will execute the `me` query set up using Apollo Server.
 
-* `mutations.js`:
+              * `mutations.js`:
 
 * `LOGIN_USER` will execute the `loginUser` mutation set up using Apollo Server.
 
