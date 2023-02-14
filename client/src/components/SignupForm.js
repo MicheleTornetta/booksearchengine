@@ -53,7 +53,6 @@ const SignupForm = () => {
 
     try {
       await signup();
-      console.log('asdf');
     } catch (err) {
       console.log(err);
       setShowAlert(true);

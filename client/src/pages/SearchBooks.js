@@ -43,6 +43,7 @@ const SearchBooks = () => {
         title: book.volumeInfo.title,
         description: book.volumeInfo.description,
         image: book.volumeInfo.imageLinks?.thumbnail || '',
+        link: book.volumeInfo.previewLink,
       }));
 
       setSearchedBooks(bookData);
@@ -120,9 +121,10 @@ const SearchBooks = () => {
                   <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' />
                 ) : null}
                 <Card.Body>
-                  <Card.Title>{book.title}</Card.Title>
+                  <Card.Title>{book.title}</Card.Title> 
                   <p className='small'>Authors: {book.authors}</p>
                   <Card.Text>{book.description}</Card.Text>
+                  <Card.Text><a target="_blank" href={book.link} rel="noreferrer">View this book</a></Card.Text>
                   {Auth.loggedIn() && (
                     <Button
                       disabled={savedBookIds?.some((savedBookId) => savedBookId === book.bookId)}
