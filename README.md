@@ -16,27 +16,28 @@ As user who loves to read wants to search for new books to purchase.  The Google
 
 ## Accpetance Criteria
 
-When a user goes to the site they type in a topic and a list of books will populate.  heroku logs
+When a user goes to the site they type in a topic and a list of books will populate.  In order to save books, the user will sign up and then login to the sight.  Once logged in, a Save This Book button will appear.  The User can click on the save this book button and come back later, log in and open see your books.   Likwise, while looking at their saved books, there will be a Delete This Book to remove a selection.   
 
 ## Mock-Up
 
-You will be able view several completed projects.  In each project you can see that each site is designed to be used on a variety of media types. 
+You will be able view several images showing the search and save functionality of the website.  
 
 The following web application's appearance and functionality:
 
-![Portfolio Demonstration](./images/webdevportfolio.png)
-([Watch the video](https://youtu.be/1BXtePU-TKo))
+![Portfolio Demonstration](./images/searchforbooks.png)
+![Portfolio Demonstration](./images/findbooks.png)
+![Portfolio Demonstration](./images/savedbooks.png)
 
 ## License 
 A short, permissive software license. Basically, you can do whatever you want as long as you include the original copyright and license notice in any copy of the software/source.  There are many variations of this license in use.
 
 ## Credits
 
-Forms:  https://www.brainstormcreative.co.uk/react-js/react-bootstrap-form-part-2-validation-and-errors/
-Navigation Bar: https://getbootstrap.com/docs/4.0/components/navbar/
-Navigation Bar Components:  https://react-bootstrap.github.io/components/navbar/
+Connect MongoDB & Heroku:  https://medium.com/nerd-for-tech/get-started-with-mongodb-atlas-dbb734726a7f
+                           https://www.fosslinux.com/50303/deploy-mongodb-on-heroku.htm
+
 
 ## Deployed Link
 
-* Portfolio URL: https://micheletornetta.github.io/WebDevPortfolio/
-* GitHub repository URL: https://micheletornetta.github.io/WebDevPortfolio/
+* Website URL: https://booksearchenginegoogle.herokuapp.com/
+* GitHub repository URL: https://micheletornetta.github.io/booksearchengine/
