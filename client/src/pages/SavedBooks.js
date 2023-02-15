@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Container, Card, Button } from 'react-bootstrap';
-
+// import { GET_ME } from '../utils/queries';
+import { REMOVE_BOOK } from '../utils/mutations';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 const { gql, useMutation, useQuery } = require('@apollo/client');
@@ -11,13 +12,7 @@ const SavedBooks = () => {
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
 
-  const [deleteBook] = useMutation(gql`
-    mutation SaveBook($token: String!, $input: SaveBookInput) {
-      saveBook(token: $token, input: $input) {
-        username
-      }
-    }
-  `, {
+  const [deleteBook] = useMutation(REMOVE_BOOK, {
     onCompleted: (data) => {
       console.log(data);
       setUserData(data);

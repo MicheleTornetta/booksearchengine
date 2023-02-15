@@ -1,7 +1,7 @@
 // see SignupForm.js for comments
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-
+import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 const { gql, useMutation } = require('@apollo/client');
 
@@ -11,13 +11,7 @@ const LoginForm = () => {
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-  const [login] = useMutation(gql`
-    mutation Login($email: String!, $password: String!) {
-      login(email: $email, password: $password) {
-        token
-      }
-    }
-  `, {
+  const [login] = useMutation(LOGIN_USER, {
     variables: {
       email: userFormData.email,
       password: userFormData.password
