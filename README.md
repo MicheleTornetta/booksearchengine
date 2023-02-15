@@ -40,4 +40,4 @@ Connect MongoDB & Heroku:  https://medium.com/nerd-for-tech/get-started-with-mon
 ## Deployed Link
 
 * Website URL: https://booksearchenginegoogle.herokuapp.com/
-* GitHub repository URL: https://micheletornetta.github.io/booksearchengine/
+* GitHub repository URL: https://github.com/MicheleTornetta/booksearchengine
