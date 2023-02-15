@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Col, Row, Form, Button, Card } from 'react-bootstrap';
-// import { GET_ME } from '../utils/queries';
 import {SAVE_BOOK} from '../utils/mutations';
 import Auth from '../utils/auth';
 import { searchGoogleBooks } from '../utils/API';

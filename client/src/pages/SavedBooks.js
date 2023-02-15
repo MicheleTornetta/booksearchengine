@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Container, Col, Row, Card, Button } from 'react-bootstrap';
-// import { GET_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
@@ -22,9 +21,6 @@ const SavedBooks = () => {
   const result = useQuery(GET_ME, {
     fetchPolicy: "no-cache"
   });
-
-  console.log(result);
-  console.log('abc');
 
   if (!userData.username && result.data) {
     setUserData(result.data.me);
