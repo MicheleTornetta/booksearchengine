@@ -15,7 +15,7 @@ type User {
 
  
 type Query {
-  me(token: String!): User
+  me: User
 }
 
 

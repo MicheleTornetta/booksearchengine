@@ -9,11 +9,19 @@ const { applyMiddleware } = require("./utils/auth");
 const { typeDefs } = require("./schema");
 const { User } = require("./models");
 const crypto = require("crypto");
+const jwt = require('jsonwebtoken');
+
+const secret = 'mysecretssshhhhhhh';
+const expiration = '2h';
 
 const resolvers = {
   Query: {
-    me: async ({ token }) => {
-      return await User.find({token});
+    me: async (parent, args, context) => {
+      const username = context.username;
+      
+      const users = await User.find({username});
+      
+      return users[0];
     },
   },
 
@@ -61,8 +69,12 @@ const resolvers = {
       return null;
     },
     addUser: async (_, { username, email, password }) => {
+      let token = jwt.sign({
+        data: { username }
+      }, secret, { expiresIn: expiration });
+
       return {
-        token: "Testing",
+        token,
         user: await User.create({
           username,
           email,
@@ -74,11 +86,14 @@ const resolvers = {
 
     login: async (_, { email, password }) => {
       const users = await User.find({ email });
+      
       if (users.length) {
         const user = users[0];
 
         if (await bcrypt.compare(password, user.password)) {
-          let token = crypto.randomBytes(64).toString("hex");
+          let token = jwt.sign({
+            data: { username: user.username }
+          }, secret, { expiresIn: expiration });
 
           user.token = token;
           user.save();
@@ -99,8 +114,30 @@ const resolvers = {
   },
 };
 
+function authMiddleware ({ req }) {
+  let token = req.body.token || req.query.token || req.headers.authorization;
+
+  if (req.headers.authorization) {
+    token = token.split(' ').pop().trim();
+  }
+
+  if (!token) {
+    return req;
+  }
+
+  try {
+    const { data } = jwt.verify(token, secret, { maxAge: expiration });
+    
+    req.username = data.username;
+  } catch {
+    console.log('Invalid token');
+  }
+
+  return req;
+}
+
 //Implemented the Apollo Server and apply it to the Express server as middleware
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ typeDefs, resolvers, context: authMiddleware });
 
 (async () => {
   await server.start();

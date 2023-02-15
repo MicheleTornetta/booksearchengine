@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Container, Card, Button } from 'react-bootstrap';
+import { Container, Col, Row, Card, Button } from 'react-bootstrap';
 // import { GET_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
-const { gql, useMutation, useQuery } = require('@apollo/client');
+import { GET_ME } from '../utils/queries';
+const { useMutation, useQuery } = require('@apollo/client');
 
 const SavedBooks = () => {
   const [userData, setUserData] = useState({});
@@ -14,53 +15,20 @@ const SavedBooks = () => {
 
   const [deleteBook] = useMutation(REMOVE_BOOK, {
     onCompleted: (data) => {
-      console.log(data);
-      setUserData(data);
+      setUserData(data.removeBook);
     }
   });
 
-  useQuery(gql`
-    query Me {
-      me {
-        username
-        savedBooks {
-          image
-          title
-          link
-          description
-          bookId
-          authors
-        }
-        email
-        bookCount
-        _id
-      }
-    }
-  `, {
-    variables: {
-      token: Auth.getToken(),
-    },
-    onCompleted: (user) => {
-      console.log(user);
-      setUserData(user);
-    }
+  const result = useQuery(GET_ME, {
+    fetchPolicy: "no-cache"
   });
 
-  // useEffect(() => {
-  //   const getUserData = async () => {
-  //     try {
-  //       const token = Auth.loggedIn() ? Auth.getToken() : null;
+  console.log(result);
+  console.log('abc');
 
-  //       if (!token) {
-  //         return false;
-  //       }
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
-
-  //   getUserData();
-  // });
+  if (!userData.username && result.data) {
+    setUserData(result.data.me);
+  }
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -103,9 +71,10 @@ const SavedBooks = () => {
             ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
-        <Card>
+        <Row>
           {userData.savedBooks.map((book) => {
             return (
+              <Col xs={12} sm={6} md={3}>
               <Card key={book.bookId} border='dark'>
                 {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
                 <Card.Body>
@@ -117,9 +86,10 @@ const SavedBooks = () => {
                   </Button>
                 </Card.Body>
               </Card>
+              </Col>
             );
           })}
-        </Card>
+        </Row>
       </Container>
     </>
   );

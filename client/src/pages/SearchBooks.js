@@ -29,7 +29,6 @@ const SearchBooks = () => {
 
   const [saveBook] = useMutation (SAVE_BOOK, {
     onCompleted: (data) => {
-      console.log(data);
     }
   });
 

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
-const { gql, useMutation } = require('@apollo/client');
+const { useMutation } = require('@apollo/client');
 
 const LoginForm = () => {
 
