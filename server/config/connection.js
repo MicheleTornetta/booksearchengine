@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
-console.log('Trying connect');
-mongoose.connect('mongodb://127.0.0.1:27017/googlebooks', {
+require('dotenv').config();
+
+mongoose.connect(`mongodb+srv://${process.env.db_username}:${process.env.db_password}@cluster0.y5shcl2.mongodb.net/?retryWrites=true&w=majority/googlebooks`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
