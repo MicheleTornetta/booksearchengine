@@ -79,6 +79,7 @@ const resolvers = {
           username,
           email,
           password,
+          token,
           savedBooks: [],
         }),
       };
@@ -96,7 +97,7 @@ const resolvers = {
           }, secret, { expiresIn: expiration });
 
           user.token = token;
-          user.save();
+          await user.save();
 
           return {
             token,
